@@ -29,7 +29,7 @@ class AIcar (db.Model):
         self.specialisation = specialisation
 
     def __repr__(self):
-        return '<Product %d>' % self.id
+        return '<Car %d>' % self.id
 
 
 db.create_all()
@@ -50,6 +50,15 @@ def index():
     car_schema = AIcarSchema(many=True)
     AIcars, error = AIcarSchema.dump(get_car)
     return make_response(jsonify({"AIcar", AIcars}))
+
+
+@app.route('/cars', methods = ['POST'])
+def create_car():
+    data = request.get_json()
+    car_schema = AIcarSchema()
+    AIcars, error = AIcarSchema.load(data)
+    result = AIcarSchema.dump(car.create()).data
+    return make_response(jsonify({"AIcar", AIcars}),201)
 
 
 if __name__ == "__main__":
